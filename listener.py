@@ -5,11 +5,12 @@ from downloader import Downloader
 
 class Listener(Thread):
 
-    def __init__(self):
+    def __init__(self, target):
+        Thread.__init__(self)
         self._address = 'amqp://qxyexflk:2tQMYESQNKyFmgXqJf2Nq9g9qWd5G1N1@orangutan.rmq.cloudamqp.com/qxyexflk'
         self._queue = 'mytube'
         self._timeout = 5
-        self._downloader = Downloader('D:/Work')
+        self._downloader = Downloader(target)
 
     def run(self):
         parameters = pika.URLParameters(self._address)
@@ -20,7 +21,7 @@ class Listener(Thread):
         channel.basic_qos(prefetch_count=1)
         channel.basic_consume(self.on_message, queue=self._queue)
         channel.start_consuming()
-        print('Waiting for messages...')
+        print("Waiting for messages...")
 
     def on_message(self, channel, method, properties, body):
         print('Received Message')

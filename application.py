@@ -3,7 +3,7 @@ from flask import Flask, send_from_directory
 from listener import Listener
 
 application = Flask(__name__)
-listener = Listener()
+listener = Listener(sys.argv[1])
 
 
 @application.route('/watch/<video>')
